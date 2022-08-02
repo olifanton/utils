@@ -20,15 +20,13 @@ class DefaultProvider implements DigestProvider, KeyPairProvider
      */
     public function digestSha256(Uint8Array $bytes): Uint8Array
     {
-        self::checkExt("openssl");
+        self::checkExt("hash");
 
-        $digest = openssl_digest(Bytes::arrayToBytes($bytes), 'SHA256', true);
-
-        // @codeCoverageIgnoreStart
-        if ($digest === false) {
-            throw new CryptoException("Openssl returned empty result");
+        try {
+            $digest = hash('sha256', Bytes::arrayToBytes($bytes), true);
+        } catch (\Throwable $e) {
+            throw new CryptoException("Hash error: " . $e->getMessage(), $e->getCode(), $e);
         }
-        // @codeCoverageIgnoreEnd
 
         return Bytes::bytesToArray($digest);
     }

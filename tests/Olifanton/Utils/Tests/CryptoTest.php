@@ -8,7 +8,6 @@ use Olifanton\Utils\Crypto;
 use Olifanton\Utils\CryptoProviders\DefaultProvider;
 use Olifanton\Utils\Tests\Stubs\CryptoProviderStub;
 use PHPUnit\Framework\TestCase;
-use Throwable;
 
 class CryptoTest extends TestCase
 {
