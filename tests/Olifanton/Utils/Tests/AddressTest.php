@@ -16,6 +16,7 @@ class AddressTest extends TestCase
         $this->assertTrue(Address::isValid("-1:fcb91a3a3816d0f7b8c2c76108b8a9bc5a6b7a55bd79f8ab101c52db29232260"));
         $this->assertTrue(Address::isValid("kf/8uRo6OBbQ97jCx2EIuKm8Wmt6Vb15-KsQHFLbKSMiYIny"));
         $this->assertTrue(Address::isValid("kf_8uRo6OBbQ97jCx2EIuKm8Wmt6Vb15-KsQHFLbKSMiYIny"));
+        $this->assertTrue(Address::isValid("EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c"));
     }
 
     public function testIsValidFail(): void
@@ -71,6 +72,12 @@ class AddressTest extends TestCase
             "kf_8uRo6OBbQ97jCx2EIuKm8Wmt6Vb15-KsQHFLbKSMiYIny",
             $address->toString(true, true, true, true),
         );
+    }
+
+    public function test0x0(): void
+    {
+        $address = new Address("EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c");
+        $this->assertEquals("0:0000000000000000000000000000000000000000000000000000000000000000", $address->toString(false));
     }
 
     public function testStringCast(): void
