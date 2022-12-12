@@ -103,4 +103,20 @@ class AddressTest extends TestCase
             Bytes::bytesToHexString($address->getHashPart()),
         );
     }
+
+    public function testAddressFromAddress(): void
+    {
+        $other = new Address("kf_8uRo6OBbQ97jCx2EIuKm8Wmt6Vb15-KsQHFLbKSMiYIny");
+
+        $addr = new Address($other);
+        $this->assertTrue($addr->isUserFriendly());
+        $this->assertTrue($addr->isBounceable());
+        $this->assertTrue($addr->isTestOnly());
+        $this->assertTrue($addr->isUrlSafe());
+        $this->assertEquals(-1, $addr->getWorkchain());
+        $this->assertEquals(
+            "fcb91a3a3816d0f7b8c2c76108b8a9bc5a6b7a55bd79f8ab101c52db29232260",
+            Bytes::bytesToHexString($addr->getHashPart()),
+        );
+    }
 }

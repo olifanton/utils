@@ -28,7 +28,7 @@ class Address implements \Stringable
     {
         if ($anyForm instanceof Address) {
             $this->wc = $anyForm->wc;
-            $this->hashPart = $anyForm->hashPart;
+            $this->hashPart = $anyForm->getHashPart();
             $this->isTestOnly = $anyForm->isTestOnly;
             $this->isUserFriendly = $anyForm->isUserFriendly;
             $this->isBounceable = $anyForm->isBounceable;
@@ -165,7 +165,7 @@ class Address implements \Stringable
         'isTestOnly' => "bool",
         'isBounceable' => "bool",
         'workchain' => "int",
-        'hashPart' => "mixed",
+        'hashPart' => "ajf\\TypedArrays\\Uint8Array",
     ])]
     private static function parseFriendlyAddress(string $addressString): array
     {
