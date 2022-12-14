@@ -92,16 +92,22 @@ Returns a string representation of Address.
 If all parameters are left as default, then the address will be formatted with the same flags whose value was recognized in the constructor.
 
 ###### getWorkchain(): int
+Returns Workchain ID. Returns `-1` for Masterchain and `0` for basic workchain.
 
 ###### getHashPart(): Uint8Array
+Returns address Account ID.
 
 ###### isTestOnly(): bool
+Returns true if the address has the `isTestnetOnly` flag.
 
 ###### isBounceable(): bool
+Returns true if the address has the `isBounceable` flag.
 
 ###### isUserFriendly(): bool
+Returns true if the address is user-friendly.
 
 ###### isUrlSafe(): bool
+Returns true if the address was encoded with URL-safe characters only.
 
 ---
 
