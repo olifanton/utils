@@ -11,11 +11,6 @@ use Olifanton\Utils\Helpers\AjfByteReader;
 
 class Bytes
 {
-    /**
-     * @var array<int, null>|null
-     */
-    private static ?array $base64abcMap = null;
-
     public static final function readNBytesUIntFromArray(int $n, Uint8Array $uint8Array): int
     {
         $res = 0;
@@ -33,7 +28,7 @@ class Bytes
         return self::arrayToBytes($a) === self::arrayToBytes($b); // @TODO: RAM using optimization
     }
 
-    public static function arraySlice(Uint8Array $bytes, int $start, int $end): Uint8Array
+    public static final function arraySlice(Uint8Array $bytes, int $start, int $end): Uint8Array
     {
         $result = new Uint8Array($end - $start);
         $j = 0;

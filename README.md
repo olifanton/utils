@@ -112,10 +112,54 @@ Returns true if the address was encoded with URL-safe characters only.
 ---
 
 #### `Olifanton\Utils\Bytes`
+This is a helper class for working with Uint8Array. You are unlikely to use this class directly because it is designed to handle the internal representation of Cells. However, this documentation describes the methods that you may find useful.
 
-##### _Bytes_ methods
+##### _Bytes_ static methods
 
-`@TODO`
+###### readNBytesUIntFromArray(): int
+Returns $n bytes from Uint8Array.
+
+###### compareBytes(): bool
+Returns true if Uint8Array's $a and $b are equal.
+
+###### arraySlice(): Uint8Array
+Returns an immutable fragment from the given Uint8Array.
+
+###### concatBytes(): bool
+Returns a new Uint8Array from the given ones.
+
+###### concatBytes(): Uint8Array
+Returns a new Uint8Array from the given ones.
+
+###### stringToBytes(): Uint8Array
+Returns a Uint8Array from a PHP byte string.
+
+Example:
+
+```php
+$a = \Olifanton\Utils\Bytes::stringToBytes('a');
+$a[0] === 97; // True, because the ASCII code of `a` is 97 in decimal
+```
+
+###### hexStringToBytes(): Uint8Array
+Returns a Uint8Array from a hexadecimal string.
+
+Example:
+
+```php
+$a = \Olifanton\Utils\Bytes::hexStringToBytes('0a');
+$a[0] === 10; // True
+```
+
+###### bytesToHexString(): string
+Returns a hexadecimal string representation of the Uint8Array.
+
+Example:
+
+```php
+$s = \Olifanton\Utils\Bytes::bytesToHexString(new \ajf\TypedArrays\Uint8Array([10]));
+$s === '0a'; // True
+```
 
 ---
 
