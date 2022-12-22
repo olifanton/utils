@@ -12,6 +12,8 @@ class Crypto
 
     private static ?DigestProvider $digestProvider = null;
 
+    private static ?SignatureProvider $signatureProvider = null;
+
     public static final function setKeyPairProvider(KeyPairProvider $keyPairProvider): void
     {
         self::$keyPairProvider = $keyPairProvider;
@@ -20,6 +22,11 @@ class Crypto
     public static final function setDigestProvider(DigestProvider $digestProvider): void
     {
         self::$digestProvider = $digestProvider;
+    }
+
+    public static final function setSignatureProvider(SignatureProvider $signatureProvider): void
+    {
+        self::$signatureProvider = $signatureProvider;
     }
 
     /**
@@ -54,10 +61,29 @@ class Crypto
         return self::ensureKeyPairProvider()->newSeed();
     }
 
+    /**
+     * @throws CryptoException
+     */
+    public static final function sign(Uint8Array $message, Uint8Array $secretKey): Uint8Array
+    {
+        return self::ensureSignProvider()->signDetached($message, $secretKey);
+    }
+
+    private static function getDefProvider(): DefaultProvider
+    {
+        static $provider;
+
+        if (!$provider) {
+            $provider = new DefaultProvider();
+        }
+
+        return $provider;
+    }
+
     private static function ensureKeyPairProvider(): KeyPairProvider
     {
         if (!self::$keyPairProvider) {
-            self::$keyPairProvider = new DefaultProvider();
+            self::$keyPairProvider = self::getDefProvider();
         }
 
         return self::$keyPairProvider;
@@ -66,9 +92,18 @@ class Crypto
     private static function ensureDigestProvider(): DigestProvider
     {
         if (!self::$digestProvider) {
-            self::$digestProvider = new DefaultProvider();
+            self::$digestProvider = self::getDefProvider();
         }
 
         return self::$digestProvider;
+    }
+
+    private static function ensureSignProvider(): SignatureProvider
+    {
+        if (!self::$signatureProvider) {
+            self::$signatureProvider = self::getDefProvider();
+        }
+
+        return self::$signatureProvider;
     }
 }

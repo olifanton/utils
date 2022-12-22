@@ -10,8 +10,9 @@ use Olifanton\Utils\DigestProvider;
 use Olifanton\Utils\Exceptions\CryptoException;
 use Olifanton\Utils\KeyPair;
 use Olifanton\Utils\KeyPairProvider;
+use Olifanton\Utils\SignatureProvider;
 
-class DefaultProvider implements DigestProvider, KeyPairProvider
+class DefaultProvider implements DigestProvider, KeyPairProvider, SignatureProvider
 {
     private array $ext = [];
 
@@ -24,9 +25,11 @@ class DefaultProvider implements DigestProvider, KeyPairProvider
 
         try {
             $digest = hash('sha256', Bytes::arrayToBytes($bytes), true);
+        // @codeCoverageIgnoreStart
         } catch (\Throwable $e) {
             throw new CryptoException("Hash error: " . $e->getMessage(), $e->getCode(), $e);
         }
+        // @codeCoverageIgnoreEnd
 
         return Bytes::bytesToArray($digest);
     }
@@ -84,6 +87,26 @@ class DefaultProvider implements DigestProvider, KeyPairProvider
         // @codeCoverageIgnoreEnd
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function signDetached(Uint8Array $message, Uint8Array $secretKey): Uint8Array
+    {
+        self::checkExt("sodium");
+
+        try {
+            return Bytes::bytesToArray(
+                sodium_crypto_sign_detached(
+                    Bytes::arrayToBytes($message),
+                    Bytes::arrayToBytes($secretKey),
+                ),
+            );
+        // @codeCoverageIgnoreStart
+        } catch (\SodiumException $e) {
+            throw new CryptoException($e->getMessage(), $e->getCode(), $e);
+        }
+        // @codeCoverageIgnoreEnd
+    }
 
     /**
      * @throws \SodiumException

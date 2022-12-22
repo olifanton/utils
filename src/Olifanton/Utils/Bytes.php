@@ -132,6 +132,9 @@ class Bytes
         return $arr;
     }
 
+    /**
+     * Returns PHP byte string from Uint8Array.
+     */
     public static final function arrayToBytes(Uint8Array $arr): string
     {
         return AjfByteReader::getBytes($arr->buffer);

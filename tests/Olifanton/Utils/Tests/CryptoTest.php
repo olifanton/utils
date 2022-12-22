@@ -17,6 +17,7 @@ class CryptoTest extends TestCase
 
         Crypto::setKeyPairProvider($defaultProvider);
         Crypto::setDigestProvider($defaultProvider);
+        Crypto::setSignatureProvider($defaultProvider);
     }
 
     /**
@@ -124,5 +125,21 @@ class CryptoTest extends TestCase
         $this->assertTrue(Bytes::compareBytes($stubEmpty64, Crypto::newKeyPair()->secretKey));
         $this->assertTrue(Bytes::compareBytes($stubEmpty32, Crypto::keyPairFromSeed($stubEmpty32)->publicKey));
         $this->assertTrue(Bytes::compareBytes($stubEmpty64, Crypto::keyPairFromSeed($stubEmpty32)->secretKey));
+    }
+
+    /**
+     * @throws \Olifanton\Utils\Exceptions\CryptoException
+     */
+    public function testSign(): void
+    {
+        $seed = new Uint8Array(array_fill(0, 32, 1));
+        $keyPair = Crypto::keyPairFromSeed($seed);
+        $message = new Uint8Array([1, 2, 3]);
+        $signature = Crypto::sign($message, $keyPair->secretKey);
+
+        $this->assertEquals(
+            "2bb7f19541c9d70dceb448fabcec7776b327a5edae516f42fdf6b05232cca1ebadadf1dff4355eb5d4be12193c7a033c4d2c76ebd0e78cffaa0f5b268f07d908",
+            Bytes::bytesToHexString($signature),
+        );
     }
 }
